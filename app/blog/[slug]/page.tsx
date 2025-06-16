@@ -1,36 +1,38 @@
+import { Metadata } from "next"
 
-import { GetServerSideProps } from "next"
-
-interface BlogPostProps {
-  slug: string
-  title: string
-  content: string
+interface Props {
+  params: { slug: string }
 }
 
-export default function BlogPostPage({ slug, title, content }: BlogPostProps) {
+// Optional: generate metadata for the page dynamically
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // You can fetch data here too
+  return {
+    title: `Blog post: ${params.slug}`,
+  }
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = params
+
+  // Fetch your data here (simulate with mock)
+  // You can use `fetch()` or any data fetching method
+  const post = await getPostData(slug)
+
   return (
     <main className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-4">{title}</h1>
-      <article>{content}</article>
+      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+      <article>{post.content}</article>
       <p className="mt-4 text-sm text-gray-500">Slug: {slug}</p>
     </main>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { slug } = context.params as { slug: string }
-
-  // Fetch your post data here (mock example)
-  const post = {
+// Mock fetching function — replace with your real data fetching
+async function getPostData(slug: string) {
+  // For example, fetch from your API or filesystem here
+  return {
     title: `Blog Post: ${slug}`,
     content: `This is the content for the post with slug: ${slug}`,
-  }
-
-  return {
-    props: {
-      slug,
-      title: post.title,
-      content: post.content,
-    },
   }
 }
