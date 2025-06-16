@@ -7,7 +7,6 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
- 
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -18,6 +17,7 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
+    appDir: true, // enable app directory support
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
@@ -46,8 +46,4 @@ function mergeConfig(nextConfig, userConfig) {
   }
 }
 
-
-
 export default nextConfig
-
-
